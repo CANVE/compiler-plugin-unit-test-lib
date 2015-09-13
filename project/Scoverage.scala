@@ -6,7 +6,7 @@ import com.typesafe.sbt.pgp.PgpKeys
 
 object Scoverage extends Build {
 
-  val Org = "org.scoverage"
+  val Org = "canve.scoverage"
   val Scala = "2.11.4"
   val MockitoVersion = "1.9.5"
   val ScalatestVersion = "2.2.2"
@@ -18,8 +18,8 @@ object Scoverage extends Build {
     scalaVersion := Scala,
     crossScalaVersions := Seq("2.10.4", "2.11.7"),
     fork in Test := false,
-    publishMavenStyle := true,
-    publishArtifact in Test := false,
+    publishMavenStyle := false,
+    publishArtifact in Test := true,
     parallelExecution in Test := false,
     scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8"),
     resolvers := ("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2") +: resolvers.value,
