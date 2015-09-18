@@ -1,4 +1,4 @@
-package scoverage
+package compilerPluginUnitTest
 
 import java.io.{File, FileNotFoundException}
 import java.net.URL
@@ -7,14 +7,12 @@ import scala.collection.mutable.ListBuffer
 import scala.tools.nsc.{Settings, Global, Phase}
 import scala.tools.nsc.plugins.PluginComponent
 
-import scala.tools.nsc.transform.{Transform, TypingTransformers}
-
 trait InjectablePluginComponent {
   def apply(global: Global)(body: global.Tree)
 }
 
 /** @author Stephen Samuel */
-object ScoverageCompiler {
+object InjectedCompiler {
 
   val ScalaVersion = "2.11.4"
   val ShortScalaVersion = ScalaVersion.dropRight(2)
@@ -31,9 +29,9 @@ object ScoverageCompiler {
     s
   }
 
-  def default(unitTestObj: InjectablePluginComponent): ScoverageCompiler = {
+  def default(unitTestObj: InjectablePluginComponent): InjectedCompiler = {
     val reporter = new scala.tools.nsc.reporters.ConsoleReporter(settings)
-    new ScoverageCompiler(settings, reporter, unitTestObj)
+    new InjectedCompiler(settings, reporter, unitTestObj)
   }
 
   private def getScalaJars: List[File] = {
@@ -63,18 +61,18 @@ object ScoverageCompiler {
   }
 }
 
-class ScoverageCompiler(settings: scala.tools.nsc.Settings, 
+class InjectedCompiler(settings: scala.tools.nsc.Settings, 
                         reporter: scala.tools.nsc.reporters.Reporter,
                         unitTestObj: InjectablePluginComponent)
   extends scala.tools.nsc.Global(settings, reporter) {
 
   def addToClassPath(groupId: String, artifactId: String, version: String): Unit = {
-    settings.classpath.value = settings.classpath.value + File.pathSeparator + ScoverageCompiler
+    settings.classpath.value = settings.classpath.value + File.pathSeparator + InjectedCompiler
       .findIvyJar(groupId, artifactId, version)
       .getAbsolutePath
   }
 
-  def compileSourceFiles(files: File*): ScoverageCompiler = {
+  def compileSourceFiles(files: File*): InjectedCompiler = {
     val command = new scala.tools.nsc.CompilerCommand(files.map(_.getAbsolutePath).toList, settings)
     new Run().compile(command.files)
     this
@@ -87,9 +85,9 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
     file
   }
 
-  def compileCodeSnippet(code: String): ScoverageCompiler = compileSourceFiles(writeCodeSnippetToTempFile(code))
+  def compileCodeSnippet(code: String): InjectedCompiler = compileSourceFiles(writeCodeSnippetToTempFile(code))
   
-  def compileSourceResources(urls: URL*): ScoverageCompiler = {
+  def compileSourceResources(urls: URL*): InjectedCompiler = {
     compileSourceFiles(urls.map(_.getFile).map(new File(_)): _*)
   }
 

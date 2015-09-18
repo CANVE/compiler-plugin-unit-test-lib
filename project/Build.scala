@@ -19,7 +19,6 @@ object PluginBuild extends Build {
     crossScalaVersions := Seq("2.10.4", "2.11.7"),
     fork in Test := false,
     publishMavenStyle := false,
-    publishArtifact in Test := true,
     parallelExecution in Test := false,
     scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8"),
     resolvers := ("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2") +: resolvers.value,

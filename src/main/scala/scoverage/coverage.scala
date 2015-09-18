@@ -1,4 +1,4 @@
-package scoverage
+package compilerPluginUnitTest
 
 import java.io.File
 
