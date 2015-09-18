@@ -36,11 +36,6 @@ object ScoverageCompiler {
     new ScoverageCompiler(settings, reporter, unitTestObj)
   }
 
-  def locationCompiler: LocationCompiler = {
-    val reporter = new scala.tools.nsc.reporters.ConsoleReporter(settings)
-    new LocationCompiler(settings, reporter)
-  }
-
   private def getScalaJars: List[File] = {
     val scalaJars = List("scala-compiler", "scala-library", "scala-reflect")
     scalaJars.map(findScalaJar)
@@ -79,8 +74,6 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
       .getAbsolutePath
   }
 
-  val canveUnitTest = new CanveUnitTest(this)
-
   def compileSourceFiles(files: File*): ScoverageCompiler = {
     val command = new scala.tools.nsc.CompilerCommand(files.map(_.getAbsolutePath).toList, settings)
     new Run().compile(command.files)
@@ -95,6 +88,7 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
   }
 
   def compileCodeSnippet(code: String): ScoverageCompiler = compileSourceFiles(writeCodeSnippetToTempFile(code))
+  
   def compileSourceResources(urls: URL*): ScoverageCompiler = {
     compileSourceFiles(urls.map(_.getFile).map(new File(_)): _*)
   }
@@ -133,7 +127,7 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
       analyzer.namerFactory -> "resolve names, attach symbols to named trees",
       analyzer.packageObjects -> "load package objects",
       analyzer.typerFactory -> "the meat and potatoes: type the trees",
-      canveUnitTest -> "the unit test injector"
+      new CanveUnitTest(this) -> "the unit test injector"
     )
     phs foreach (addToPhasesSet _).tupled
   }
