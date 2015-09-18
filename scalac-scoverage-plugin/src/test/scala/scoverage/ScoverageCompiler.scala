@@ -23,9 +23,6 @@ object ScoverageCompiler {
 
   def settings: Settings = {
     val s = new scala.tools.nsc.Settings
-    s.Xprint.value = List("all")
-    s.Yrangepos.value = true
-    s.Yposdebug.value = true
     s.classpath.value = classPath.mkString(File.pathSeparator)
 
     val path = s"./target/scala-$ShortScalaVersion/test-generated-classes"
@@ -82,10 +79,7 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
       .getAbsolutePath
   }
 
-  val instrumentationComponent = new ScoverageInstrumentationComponent(this)
-  instrumentationComponent.setOptions(new ScoverageOptions())
   val canveUnitTest = new CanveUnitTest(this)
-  val validator = new PositionValidator(this)
 
   def compileSourceFiles(files: File*): ScoverageCompiler = {
     val command = new scala.tools.nsc.CompilerCommand(files.map(_.getAbsolutePath).toList, settings)
@@ -103,22 +97,6 @@ class ScoverageCompiler(settings: scala.tools.nsc.Settings,
   def compileCodeSnippet(code: String): ScoverageCompiler = compileSourceFiles(writeCodeSnippetToTempFile(code))
   def compileSourceResources(urls: URL*): ScoverageCompiler = {
     compileSourceFiles(urls.map(_.getFile).map(new File(_)): _*)
-  }
-
-  class PositionValidator(val global: Global) extends PluginComponent with TypingTransformers with Transform {
-
-    override val phaseName: String = "scoverage-validator"
-    override val runsAfter: List[String] = List("typer")
-    override val runsBefore = List[String]("scoverage-instrumentation")
-
-    override protected def newTransformer(unit: global.CompilationUnit): global.Transformer = new Transformer(unit)
-    class Transformer(unit: global.CompilationUnit) extends TypingTransformer(unit) {
-
-      override def transform(tree: global.Tree) = {
-        global.validatePositions(tree)
-        tree
-      }
-    }
   }
 
   class CanveUnitTest(val global: Global) extends PluginComponent {
