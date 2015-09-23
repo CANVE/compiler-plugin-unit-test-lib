@@ -79,7 +79,7 @@ class InjectedCompiler(settings: scala.tools.nsc.Settings,
   }
 
   def writeCodeSnippetToTempFile(code: String): File = {
-    val file = File.createTempFile("scoverage_snippet", ".scala")
+    val file = File.createTempFile("canve-compiler-plugin-unit-test-tmp", ".scala")
     IOUtils.writeToFile(file, code)
     file.deleteOnExit()
     file
