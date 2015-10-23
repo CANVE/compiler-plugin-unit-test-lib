@@ -15,11 +15,13 @@ project/plugins/project/
 credentials.sbt
 *.icode
 
-# Scala-IDE
+# eclipse / Scala-IDE
 .classpath
 .project
 .settings/
 .cache*
 .scala_dependencies
+.classpath
 *.iml
 /bin/
+
