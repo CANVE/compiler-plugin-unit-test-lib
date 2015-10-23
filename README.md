@@ -1,8 +1,7 @@
+[![Build Status](https://travis-ci.org/CANVE/compiler-plugin-unit-test-lib.svg)](https://travis-ci.org/CANVE/compiler-plugin-unit-test-lib)
+
 ## License
 ```
-
-https://travis-ci.org/CANVE/compiler-plugin-unit-test-lib.svg
-
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
