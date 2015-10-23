@@ -1,10 +1,11 @@
 *.class
 *.log
 
+# IntelliJ
 .idea
 .idea_modules
 
-# sbt specific
+# sbt
 dist/*
 target/
 lib_managed/
@@ -14,13 +15,11 @@ project/plugins/project/
 credentials.sbt
 *.icode
 
-# Eclipse specific
+# Scala-IDE
 .classpath
 .project
 .settings/
 .cache*
-
-# Scala-IDE specific
 .scala_dependencies
 *.iml
 /bin/
