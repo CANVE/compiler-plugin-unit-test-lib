@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/CANVE/compiler-plugin-unit-test-lib.svg)](https://travis-ci.org/CANVE/compiler-plugin-unit-test-lib)
 
+This library has been reduced from [scoverage's test code](https://github.com/scoverage/scalac-scoverage-plugin/tree/master/scalac-scoverage-plugin/src/test/scala/scoverage), to which I am greatly obliged.
+
 ## License
 ```
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
